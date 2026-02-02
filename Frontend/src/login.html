@@ -10,6 +10,8 @@
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -90,15 +92,9 @@
             outline: none;
         }
 
-        /* Role Selector Radio Button Styling */
-        .role-radio:checked + div {
-            background-color: #eff6ff; /* brand-50 */
-            border-color: #0ea5e9;
-            color: #0284c7;
-        }
-        .role-radio:checked + div .check-icon {
-            opacity: 1;
-            transform: scale(1);
+        /* Eye Icon Cursor */
+        #togglePassword {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -147,80 +143,36 @@
                 
                 <!-- Header -->
                 <div class="text-center mb-8">
-                    <a href="landing_page.html" class="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-600 rounded-xl text-white shadow-lg mb-4 hover:scale-105 transition-transform">
+                    <a href="index.html" class="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-600 rounded-xl text-white shadow-lg mb-4 hover:scale-105 transition-transform">
                         <i class="fa-solid fa-expand text-xl"></i>
                     </a>
                     <h2 class="text-2xl font-bold text-slate-900">Sign In</h2>
-                    <p class="text-slate-500 text-sm mt-2">Select your role to continue</p>
-                </div>
-
-                <!-- Role Selection -->
-                <div class="grid grid-cols-3 gap-3 mb-8">
-                    <!-- Student -->
-                    <label class="cursor-pointer relative">
-                        <input type="radio" name="role" value="Student" class="role-radio sr-only" checked>
-                        <div class="border border-slate-200 rounded-xl p-3 text-center hover:bg-slate-50 transition-all h-full flex flex-col items-center justify-center gap-2 bg-white/50">
-                            <i class="fa-solid fa-user-graduate text-lg mb-1"></i>
-                            <span class="text-xs font-bold">Student</span>
-                            <div class="check-icon absolute top-2 right-2 text-brand-500 opacity-0 transform scale-50 transition-all duration-200">
-                                <i class="fa-solid fa-circle-check"></i>
-                            </div>
-                        </div>
-                    </label>
-                    <!-- Faculty -->
-                    <label class="cursor-pointer relative">
-                        <input type="radio" name="role" value="Faculty" class="role-radio sr-only">
-                        <div class="border border-slate-200 rounded-xl p-3 text-center hover:bg-slate-50 transition-all h-full flex flex-col items-center justify-center gap-2 bg-white/50">
-                            <i class="fa-solid fa-chalkboard-user text-lg mb-1"></i>
-                            <span class="text-xs font-bold">Faculty</span>
-                            <div class="check-icon absolute top-2 right-2 text-brand-500 opacity-0 transform scale-50 transition-all duration-200">
-                                <i class="fa-solid fa-circle-check"></i>
-                            </div>
-                        </div>
-                    </label>
-                    <!-- Admin -->
-                    <label class="cursor-pointer relative">
-                        <input type="radio" name="role" value="Admin" class="role-radio sr-only">
-                        <div class="border border-slate-200 rounded-xl p-3 text-center hover:bg-slate-50 transition-all h-full flex flex-col items-center justify-center gap-2 bg-white/50">
-                            <i class="fa-solid fa-user-gear text-lg mb-1"></i>
-                            <span class="text-xs font-bold">Admin</span>
-                            <div class="check-icon absolute top-2 right-2 text-brand-500 opacity-0 transform scale-50 transition-all duration-200">
-                                <i class="fa-solid fa-circle-check"></i>
-                            </div>
-                        </div>
-                    </label>
+                    <p class="text-slate-500 text-sm mt-2">Enter your credentials to access the portal</p>
                 </div>
 
                 <!-- Login Form -->
-                <form id="loginForm" class="space-y-5" onsubmit="handleLogin(event)">
+                <form id="loginForm" class="space-y-5">
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
-                        <input type="email" placeholder="name@university.edu" class="w-full px-4 py-3 rounded-xl input-glass text-sm font-medium placeholder:text-slate-400" required>
+                        <input type="email" id="email" placeholder="name@university.edu" class="w-full px-4 py-3 rounded-xl input-glass text-sm font-medium placeholder:text-slate-400" required>
                     </div>
-                    <div>
+                    <div class="relative">
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
-                        <input type="password" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl input-glass text-sm font-medium placeholder:text-slate-400" required>
+                        <input type="password" id="password" placeholder="••••••••" class="w-full px-4 py-3 rounded-xl input-glass text-sm font-medium placeholder:text-slate-400" required>
+                        <!-- Updated: Removed onclick, added id for JS listener -->
+                        <i class='bx bx-show absolute right-4 top-[38px] text-xl text-slate-500 hover:text-brand-500' id="togglePassword"></i>
                         <div class="flex justify-end mt-2">
                             <a href="#" class="text-xs font-semibold text-brand-600 hover:text-brand-500">Forgot Password?</a>
                         </div>
                     </div>
 
-                    <button type="submit" class="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg hover:shadow-slate-900/20 active:scale-[0.98]">
+                    <!-- Added: Error Message Container -->
+                    <p id="errorMsg" class="text-red-500 text-xs font-semibold text-center h-4"></p>
+
+                    <button type="submit" id="loginBtn" class="w-full bg-slate-900 text-white py-3.5 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg hover:shadow-slate-900/20 active:scale-[0.98]">
                         Sign In
                     </button>
                 </form>
-
-                <div class="my-6 flex items-center justify-center gap-4">
-                    <div class="h-px bg-slate-200 w-full"></div>
-                    <span class="text-xs text-slate-400 font-medium uppercase">Or</span>
-                    <div class="h-px bg-slate-200 w-full"></div>
-                </div>
-
-                <!-- Google Login Button -->
-                <button type="button" onclick="handleGoogleLogin()" class="w-full bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-3">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
-                    <span>Continue with Google</span>
-                </button>
 
                 <p class="text-center text-xs text-slate-400 mt-8">
                     &copy; 2025 Smart Attendance AI. Secured by JWT.
@@ -231,42 +183,87 @@
 
     <!-- JavaScript Logic -->
     <script>
-        function handleLogin(event) {
-            event.preventDefault();
-            
-            // Get selected role
-            const role = document.querySelector('input[name="role"]:checked').value;
-            const btn = document.querySelector('button[type="submit"]');
-            
-            // Simulate loading state
-            const originalText = btn.innerText;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...';
-            btn.classList.add('opacity-75', 'cursor-not-allowed');
-            
-            setTimeout(() => {
-                // Determine redirect parameter based on role
-                // In a real app, this would be handled by the backend session
-                // Here we redirect to the dashboard (index.html) and simulate role handling there via URL params or LocalStorage
-                
-                // Saving role to localStorage to mock persistance in index.html if we were updating it to read from here
-                // For this demo, we just redirect to the dashboard
-                localStorage.setItem('currentUserRole', role.toLowerCase());
-                
-                // Redirect to the main application dashboard
-                window.location.href = 'index.html'; 
-            }, 1500);
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordInput = document.getElementById("password");
+            const togglePassword = document.getElementById("togglePassword");
+            const loginForm = document.getElementById("loginForm");
+            const loginBtn = document.getElementById("loginBtn");
+            const errorMsg = document.getElementById("errorMsg");
+            const emailInput = document.getElementById("email");
 
-        function handleGoogleLogin() {
-            // Mock Google Login
-            const btn = document.querySelector('button[type="button"]');
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting...';
-            
-            setTimeout(() => {
-                localStorage.setItem('currentUserRole', 'student'); // Default to student for Google Auth
-                window.location.href = 'index.html';
-            }, 1500);
-        }
+            // 1. Better Password Toggle
+            if(togglePassword) {
+                togglePassword.addEventListener("click", function() {
+                    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                    passwordInput.setAttribute("type", type);
+                    
+                    // Change icon
+                    this.classList.toggle("bx-show");
+                    this.classList.toggle("bx-hide");
+                });
+            }
+
+            // 2. Form Submission
+            if(loginForm) {
+                loginForm.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    
+                    // UI Loading State
+                    const originalBtnText = loginBtn.innerHTML;
+                    loginBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Logging in...';
+                    loginBtn.disabled = true;
+                    loginBtn.classList.add("opacity-75", "cursor-not-allowed");
+                    errorMsg.innerText = "";
+
+                    try {
+                        const response = await fetch("http://localhost:8080/api/auth/login", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                email: email.value,
+                                password: password.value
+                            }),
+                            
+                        });
+
+                        
+
+                        const data = await response.json();
+                        console.log("Server Response:", data);
+                        if(data.role==="ADMIN"){
+                            localStorage.setItem("token", data.token);
+                            window.location.href = "admin_dashboard.html";
+                        }else if(data.role==="STUDENT"){
+                            localStorage.setItem("token", data.token);
+                            window.location.href = "student_dashboard.html";
+                        }else if(data.role==="FACULTY"){
+                            localStorage.setItem("token", data.token);
+                            window.location.href = "faculty_dashboard.html";
+                        }else{
+                            throw new Error(data.message || "Invalid credentials");
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        
+                        // --- FALLBACK FOR DEMO (Since localhost:8080 might not be running) ---
+                        // Remove this block in production
+                        if(err.message.includes("Failed to fetch")) {
+                            console.warn("Backend unreachable. Using Demo Login.");
+                            setTimeout(() => {
+                                // window.location.href = "index.html";
+                            }, 1000);
+                            return;
+                        }
+                        // ------------------------------------------------------------------
+
+                        errorMsg.innerText = "❌ " + err.message;
+                        loginBtn.innerHTML = originalBtnText;
+                        loginBtn.disabled = false;
+                        loginBtn.classList.remove("opacity-75", "cursor-not-allowed");
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>

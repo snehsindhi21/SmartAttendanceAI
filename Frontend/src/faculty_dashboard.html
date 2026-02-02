@@ -275,6 +275,20 @@
         function logout() {
             window.location.href = 'attendance.html';
         }
+        /* =====================================================
+   FACULTY DASHBOARD LOGIC – AttendX
+   Frontend First | Backend Ready
+   ===================================================== */
+
+/* ---------------- AUTH GUARD ---------------- */
+ const token = localStorage.getItem("token");
+ if (!token) {
+     window.location.href = "login.html";
+ }
+
+/**
+ * Faculty Dashboard Logic - SmartAttendance
+ */
     </script>
 </body>
 </html>

@@ -435,6 +435,13 @@
                 video.srcObject = null;
             }, 300);
         }
+        /* =============================================
+   SMART ATTENDANCE - STUDENT DASHBOARD LOGIC
+   ============================================= */
+
+// 1. AUTH GUARD (Optional: Check if user is logged in)
+ const token = localStorage.getItem("token");
+ if (!token) window.location.href = "login.html";
     </script>
 </body>
 </html>

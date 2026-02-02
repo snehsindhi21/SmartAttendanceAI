@@ -346,7 +346,7 @@
                             <label class="text-xs font-bold text-slate-500 mb-2 block uppercase tracking-wider">Email Address</label>
                             <input type="email" placeholder="faculty@uni.edu" class="input-field">
                         </div>
-                        <button class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-8 py-3 rounded-xl-p font-bold hover:shadow-lg hover:shadow-purple-500/20 transition-all hover:-translate-y-0.5 whitespace-nowrap h-full shadow-md">
+                        <button class="bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white px-8 py-3 rounded-xl-p font-bold hover:shadow-lg hover:shadow-purple-500/20 transition-all hover:-translate-y-0.5 whitespace-nowrap h-full shadow-md">
                             Send Invite
                         </button>
                     </div>
@@ -573,6 +573,8 @@
         // Initialize First View
         switchView('students');
 
+        /* ---------- AUTH ---------- */
+ if (!localStorage.getItem("token")) location.href = "login.html";
     </script>
 </body>
 </html>
