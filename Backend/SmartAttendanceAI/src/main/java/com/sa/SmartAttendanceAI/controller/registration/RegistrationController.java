@@ -25,6 +25,14 @@ public class RegistrationController {
             @RequestParam String gender,
             @RequestParam String mobile,
             @RequestParam(required = false) String rollNo,
+
+            // ✅ FACULTY FIELDS
+            @RequestParam(required = false) String employeeId,
+            @RequestParam(required = false) String department,
+            @RequestParam(required = false) String designation,
+            @RequestParam(required = false) Integer experience,
+            @RequestParam(required = false) String joiningDate,
+
             @RequestParam String password,
             @RequestPart("profilePic") MultipartFile profilePic
     ) throws Exception {
@@ -32,7 +40,10 @@ public class RegistrationController {
         registrationService.register(
                 token, title, firstName, middleName,
                 lastName, dob, gender, mobile,
-                rollNo, password, profilePic
+                rollNo,
+                employeeId, department, designation,
+                experience, joiningDate,
+                password, profilePic
         );
 
         return "Registration Successful";

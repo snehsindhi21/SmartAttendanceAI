@@ -39,9 +39,17 @@ public class RegistrationService {
             String gender,
             String mobile,
             String rollNo,
+
+            // ✅ FACULTY FIELDS
+            String employeeId,
+            String department,
+            String designation,
+            Integer experience,
+            String joiningDate,
+
             String password,
             MultipartFile profilePic
-    ) throws Exception{
+    ) throws Exception {
 
         // 🔐 1️⃣ Validate Token
     	RegistrationToken token = tokenRepo.findByToken(tokenStr)
@@ -87,7 +95,7 @@ public class RegistrationService {
 
             studentRepo.save(student);
 
-        } else if ("FACULTY".equalsIgnoreCase(role)) {
+        }  else if ("FACULTY".equalsIgnoreCase(role)) {
 
             Faculty faculty = facultyRepo.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("Faculty not found"));
@@ -101,9 +109,18 @@ public class RegistrationService {
             faculty.setProfilePic(imageBytes);
             faculty.setStatus("ACTIVE");
 
-            facultyRepo.save(faculty);
+            // ✅ NEW FIELDS
+            faculty.setEmployeeId(employeeId);
+            faculty.setDepartment(department);
+            faculty.setDesignation(designation);
+            faculty.setExperience(experience);
 
-        } else {
+            if (joiningDate != null && !joiningDate.isEmpty()) {
+                faculty.setJoiningDate(LocalDate.parse(joiningDate));
+            }
+
+            facultyRepo.save(faculty);
+        }else {
             throw new RuntimeException("Invalid Role");
         }
 

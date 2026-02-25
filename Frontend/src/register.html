@@ -92,6 +92,11 @@
         .input-field::placeholder {
             color: #94a3b8;
         }
+        .input-field:disabled {
+            background-color: #f1f5f9;
+            cursor: not-allowed;
+            color: #94a3b8;
+        }
 
         /* Icon Position */
         .input-wrapper {
@@ -186,7 +191,7 @@
                     </div>
                 </div>
 
-                <div class="text-xs text-slate-500">© 2025 Smart Attendance-AI. All Rights Reserved.</div>
+                <div class="text-xs text-slate-500">© 2026 Smart Attendance-AI. All Rights Reserved.</div>
             </div>
         </div>
 
@@ -196,7 +201,7 @@
                 
                 <div class="mb-6 px-4">
                     <h2 class="text-3xl font-bold text-slate-900">Create Account</h2>
-                    <p class="text-slate-500 text-sm mt-1">Enter your details to generate your student profile.</p>
+                    <p class="text-slate-500 text-sm mt-1">Enter your details to generate your <span id="roleLabel" class="font-bold text-brand-500">Student</span> profile.</p>
                 </div>
 
                 <div class="flex-1 overflow-y-auto px-4 pr-2 custom-scroll">
@@ -223,10 +228,12 @@
                             <div class="col-span-3 sm:col-span-2">
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Title</label>
                                 <div class="input-wrapper">
-                                    <select class="input-field pl-3 bg-white cursor-pointer" required>
+                                    <select id="title" class="input-field pl-3 bg-white cursor-pointer" required>
                                         <option>Mr.</option>
                                         <option>Ms.</option>
                                         <option>Mx.</option>
+                                        <option>Dr.</option>
+                                        <option>Prof.</option>
                                     </select>
                                 </div>
                             </div>
@@ -234,16 +241,16 @@
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">First Name</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-user input-icon"></i>
-                                    <input type="text" class="input-field" placeholder="John" required>
+                                    <input type="text" id="firstName" class="input-field pl-10" placeholder="John" required>
                                 </div>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Middle Name</label>
-                                <input type="text" class="input-field pl-4" placeholder="">
+                                <input type="text" id="middleName" class="input-field pl-4" placeholder="">
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Last Name</label>
-                                <input type="text" class="input-field pl-4" placeholder="Doe" required>
+                                <input type="text" id="lastName" class="input-field pl-4" placeholder="Doe" required>
                             </div>
                         </div>
 
@@ -252,14 +259,14 @@
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Date of Birth</label>
                                 <div class="input-wrapper">
                                     <i class="fa-regular fa-calendar input-icon"></i>
-                                    <input type="date" class="input-field text-slate-600" required>
+                                    <input type="date" id="dob" class="input-field pl-10 text-slate-500" required>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Gender</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-venus-mars input-icon"></i>
-                                    <select class="input-field cursor-pointer bg-white" required>
+                                    <select id="gender" class="input-field pl-10 cursor-pointer bg-white" required>
                                         <option value="" disabled selected>Select</option>
                                         <option>Male</option>
                                         <option>Female</option>
@@ -275,7 +282,7 @@
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Email Address <i class="fa-solid fa-lock text-xs text-brand-500 ml-1"></i></label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-envelope input-icon"></i>
-                                    <input type="email" value="student@university.edu" disabled class="input-field bg-slate-50 text-slate-500 cursor-not-allowed border-slate-200">
+                                    <input type="email" id="email" disabled class="input-field pl-10 bg-slate-50 text-slate-500 cursor-not-allowed border-slate-200">
                                 </div>
                             </div>
                             <div>
@@ -283,27 +290,73 @@
                                 <div class="input-wrapper relative">
                                     <i class="fa-solid fa-phone input-icon"></i>
                                     <span class="absolute left-10 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-500 border-r border-slate-200 pr-2 h-5 flex items-center">+91</span>
-                                    <input type="tel" class="input-field pl-24" placeholder="98765 43210" required>
+                                    <input type="tel" id="mobile" class="input-field pl-24" placeholder="98765 43210" required>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Academic Details -->
-                        <div>
+                        <hr class="border-slate-200">
+
+                        <!-- DYNAMIC FIELDS: Student Details -->
+                        <div id="studentFields" class="col-span-12">
                             <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">University Roll Number</label>
                             <div class="input-wrapper">
                                 <i class="fa-solid fa-id-card input-icon"></i>
-                                <input type="text" class="input-field font-mono text-brand-600 font-bold" placeholder="IU0000000000" required>
+                                <input type="text" id="rollNo" class="input-field pl-10 font-mono text-brand-600 font-bold" placeholder="2024-CS-XXX">
+                            </div>
+                        </div>
+
+                        <!-- DYNAMIC FIELDS: Faculty Details -->
+                        <div id="facultyFields" class="col-span-12 hidden">
+                            <h3 class="text-sm font-bold text-slate-700 uppercase mb-3 pb-1">Faculty Details</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wider">Employee ID</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-id-badge input-icon"></i>
+                                        <input type="text" id="employeeId" class="input-field pl-10 font-mono text-brand-600 font-bold" placeholder="EMP-001">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wider">Department</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-building input-icon"></i>
+                                        <input type="text" id="department" class="input-field pl-10" placeholder="Computer Science">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wider">Designation</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-user-tie input-icon"></i>
+                                        <input type="text" id="designation" class="input-field pl-10" placeholder="Professor">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wider">Experience (Yrs)</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-briefcase input-icon"></i>
+                                        <input type="number" id="experience" class="input-field pl-10" placeholder="5" min="0">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wider">Joining Date</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-calendar-check input-icon"></i>
+                                        <input type="date" id="joiningDate" class="input-field pl-10 text-slate-500">
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Security -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Create Password</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-key input-icon"></i>
-                                    <input type="password" id="password" class="input-field" placeholder="••••••••" required>
+                                    <input type="password" id="password" class="input-field pl-10" placeholder="••••••••" required>
                                     <i class="fa-solid fa-eye absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 cursor-pointer hover:text-brand-500" onclick="togglePassword('password', this)"></i>
                                 </div>
                             </div>
@@ -311,7 +364,7 @@
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Confirm Password</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-shield-halved input-icon"></i>
-                                    <input type="password" id="confirmPassword" class="input-field" placeholder="••••••••" required>
+                                    <input type="password" id="confirmPassword" class="input-field pl-10" placeholder="••••••••" required>
                                     <i class="fa-solid fa-eye absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 cursor-pointer hover:text-brand-500" onclick="togglePassword('confirmPassword', this)"></i>
                                 </div>
                             </div>
@@ -336,103 +389,146 @@
     </div>
 
     <script>
+        // ==============================
+        // 🔐 Get Token & Role from URL
+        // ==============================
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get("token");
+        const role = (urlParams.get("role") || "STUDENT").toUpperCase(); // Defaults to STUDENT
+        const emailParam = urlParams.get("email") || "user@university.edu";
 
-    // ==============================
-    // 🔐 Get Token & Role from URL
-    // ==============================
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
-    const role = urlParams.get("role");
+        // DOM Elements
+        const studentFields = document.getElementById("studentFields");
+        const rollNoInput = document.getElementById("rollNo");
+        
+        const facultyFields = document.getElementById("facultyFields");
+        const employeeIdInput = document.getElementById("employeeId");
+        const departmentInput = document.getElementById("department");
+        const designationInput = document.getElementById("designation");
+        const experienceInput = document.getElementById("experience");
+        const joiningDateInput = document.getElementById("joiningDate");
 
-    if (!token || !role) {
-        alert("Invalid registration link.");
-        window.location.href = "index.html";
-    }
-    if (role === "FACULTY") {
-    document.querySelector("label:contains('University Roll Number')")?.parentElement.remove();
-}
+        // UI Initialization
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById('email').value = emailParam;
 
+            if (role === "FACULTY") {
+                // Update UI Labels
+                document.getElementById("roleLabel").innerText = "Faculty";
+                
+                // Hide Student Fields
+                studentFields.classList.add("hidden");
+                rollNoInput.disabled = true;
+                rollNoInput.required = false;
 
-    // ==============================
-    // 👁 Password Toggle
-    // ==============================
-    function togglePassword(id, icon) {
-        const input = document.getElementById(id);
-        input.type = input.type === "password" ? "text" : "password";
-        icon.classList.toggle("fa-eye");
-        icon.classList.toggle("fa-eye-slash");
-    }
-
-    // ==============================
-    // 🖼 Image Preview
-    // ==============================
-    function previewImage(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('preview').src = e.target.result;
-                document.getElementById('preview').classList.remove('hidden');
-                document.getElementById('uploadIcon').classList.add('hidden');
+                // Show Faculty Fields
+                facultyFields.classList.remove("hidden");
+                employeeIdInput.required = true;
+                departmentInput.required = true;
+                designationInput.required = true;
+                experienceInput.required = true;
+                joiningDateInput.required = true;
+            } else {
+                // Keep Student Fields visible (default)
+                rollNoInput.required = true;
+                rollNoInput.disabled = false;
             }
-            reader.readAsDataURL(input.files[0]);
+        });
+
+        // ==============================
+        // 👁 Password Toggle
+        // ==============================
+        function togglePassword(id, icon) {
+            const input = document.getElementById(id);
+            input.type = input.type === "password" ? "text" : "password";
+            icon.classList.toggle("fa-eye");
+            icon.classList.toggle("fa-eye-slash");
         }
-    }
 
-    // ==============================
-    // 🚀 REAL REGISTRATION
-    // ==============================
-    async function handleRegistration(e) {
-    e.preventDefault();
+        // ==============================
+        // 🖼 Image Preview
+        // ==============================
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview').src = e.target.result;
+                    document.getElementById('preview').classList.remove('hidden');
+                    document.getElementById('uploadIcon').classList.add('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
+        // ==============================
+        // 🚀 REAL REGISTRATION
+        // ==============================
+        async function handleRegistration(e) {
+            e.preventDefault();
 
-    if (password !== confirmPassword) {
-        alert("Passwords do not match!");
-        return;
-    }
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
 
-    const formData = new FormData();
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
 
-    formData.append("token", token);
-    formData.append("role", role);
-    formData.append("title", document.querySelector("select").value);
-    formData.append("firstName", document.querySelectorAll("input")[0].value);
-    formData.append("middleName", document.querySelectorAll("input")[1].value);
-    formData.append("lastName", document.querySelectorAll("input")[2].value);
-    formData.append("dob", document.querySelector("input[type='date']").value);
-    formData.append("gender", document.querySelectorAll("select")[1].value);
-    formData.append("mobile", document.querySelector("input[type='tel']").value);
-    formData.append("password", password);
+            const fileInput = document.getElementById("profilePic");
+            if (!fileInput.files[0]) {
+                alert("Profile photo is required!");
+                return;
+            }
 
-    if (role === "STUDENT") {
-        formData.append("rollNo", document.querySelector("input[placeholder='IU0000000000']").value);
-    }
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalBtnContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+            btn.disabled = true;
 
-    const fileInput = document.getElementById("profilePic");
-    if (!fileInput.files[0]) {
-        alert("Profile photo is required!");
-        return;
-    }
+            const formData = new FormData();
+            formData.append("token", token);
+            formData.append("title", document.getElementById("title").value);
+            formData.append("firstName", document.getElementById("firstName").value);
+            formData.append("middleName", document.getElementById("middleName").value);
+            formData.append("lastName", document.getElementById("lastName").value);
+            formData.append("dob", document.getElementById("dob").value);
+            formData.append("gender", document.getElementById("gender").value);
+            formData.append("mobile", document.getElementById("mobile").value);
+            formData.append("password", password);
+            formData.append("profilePic", fileInput.files[0]);
 
-    formData.append("profilePic", fileInput.files[0]);
+            // Append Role-Specific Data safely to FormData
+            if (role === "STUDENT") {
+                formData.append("rollNo", rollNoInput.value);
+            } else if (role === "FACULTY") {
+                formData.append("employeeId", employeeIdInput.value);
+                formData.append("department", departmentInput.value);
+                formData.append("designation", designationInput.value);
+                formData.append("experience", experienceInput.value);
+                formData.append("joiningDate", joiningDateInput.value);
+            }
 
-    const response = await fetch("http://localhost:8080/api/auth/register", {
-        method: "POST",
-        body: formData
-    });
+            try {
+                const response = await fetch("http://localhost:8080/api/auth/register", {
+                    method: "POST",
+                    body: formData
+                });
 
-    if (!response.ok) {
-        alert("Registration failed");
-        return;
-    }
+                if (!response.ok) {
+                    const errorMsg = await response.text();
+                    alert("Registration failed: " + errorMsg);
+                    throw new Error("Registration Failed");
+                }
 
-    alert("Registration Successful!");
-    window.location.href = "login.html";
-}
+                alert("Registration Successful!");
+                window.location.href = "login.html";
 
-
-</script>
-
+            } catch (err) {
+                console.error(err);
+                btn.innerHTML = originalBtnContent;
+                btn.disabled = false;
+            }
+        }
+    </script>
 </body>
 </html>
