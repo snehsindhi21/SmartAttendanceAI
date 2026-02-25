@@ -1,4 +1,4 @@
-package com.sa.SmartAttendanceAI.controller;
+package com.sa.SmartAttendanceAI.controller.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sa.SmartAttendanceAI.dto.LoginRequest;
 import com.sa.SmartAttendanceAI.dto.LoginResponse;
-import com.sa.SmartAttendanceAI.service.AuthService;
+import com.sa.SmartAttendanceAI.service.auth.AuthService;
 
 
 @RestController

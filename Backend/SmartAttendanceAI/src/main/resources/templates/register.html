@@ -223,7 +223,7 @@
                             <div class="col-span-3 sm:col-span-2">
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Title</label>
                                 <div class="input-wrapper">
-                                    <select class="input-field pl-3 bg-white cursor-pointer" required>
+                                    <select id="title" class="input-field pl-3 bg-white cursor-pointer" required>
                                         <option>Mr.</option>
                                         <option>Ms.</option>
                                         <option>Mx.</option>
@@ -234,16 +234,16 @@
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">First Name</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-user input-icon"></i>
-                                    <input type="text" class="input-field" placeholder="John" required>
+                                    <input type="text" id="firstName"  class="input-field" placeholder="John" required>
                                 </div>
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Middle Name</label>
-                                <input type="text" class="input-field pl-4" placeholder="">
+                                <input type="text" id="middleName" class="input-field pl-4" placeholder="">
                             </div>
                             <div class="col-span-6 sm:col-span-3">
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Last Name</label>
-                                <input type="text" class="input-field pl-4" placeholder="Doe" required>
+                                <input type="text" id="lastName" class="input-field pl-4" placeholder="Doe" required>
                             </div>
                         </div>
 
@@ -252,14 +252,14 @@
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Date of Birth</label>
                                 <div class="input-wrapper">
                                     <i class="fa-regular fa-calendar input-icon"></i>
-                                    <input type="date" class="input-field text-slate-600" required>
+                                    <input type="date" id="dob" class="input-field text-slate-600" required>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Gender</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-venus-mars input-icon"></i>
-                                    <select class="input-field cursor-pointer bg-white" required>
+                                    <select id="gender" class="input-field cursor-pointer bg-white" required>
                                         <option value="" disabled selected>Select</option>
                                         <option>Male</option>
                                         <option>Female</option>
@@ -275,7 +275,7 @@
                                 <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Email Address <i class="fa-solid fa-lock text-xs text-brand-500 ml-1"></i></label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-envelope input-icon"></i>
-                                    <input type="email" value="student@university.edu" disabled class="input-field bg-slate-50 text-slate-500 cursor-not-allowed border-slate-200">
+                                    <input type="email" value="@university.edu" disabled class="input-field bg-slate-50 text-slate-500 cursor-not-allowed border-slate-200">
                                 </div>
                             </div>
                             <div>
@@ -283,17 +283,17 @@
                                 <div class="input-wrapper relative">
                                     <i class="fa-solid fa-phone input-icon"></i>
                                     <span class="absolute left-10 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-500 border-r border-slate-200 pr-2 h-5 flex items-center">+91</span>
-                                    <input type="tel" class="input-field pl-24" placeholder="98765 43210" required>
+                                    <input type="tel" id="mobile" class="input-field pl-24" placeholder="98765 43210" required>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Academic Details -->
-                        <div>
+                        <div id="studentFields">
                             <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">University Roll Number</label>
                             <div class="input-wrapper">
                                 <i class="fa-solid fa-id-card input-icon"></i>
-                                <input type="text" class="input-field font-mono text-brand-600 font-bold" placeholder="IU0000000000" required>
+                                <input type="text" id="rollNo" class="input-field font-mono text-brand-600 font-bold" placeholder="IU0000000000" required>
                             </div>
                         </div>
 
@@ -348,9 +348,10 @@
         alert("Invalid registration link.");
         window.location.href = "index.html";
     }
-    if (role === "FACULTY") {
-    document.querySelector("label:contains('University Roll Number')")?.parentElement.remove();
-}
+	if (role === "FACULTY") {
+	    document.getElementById("studentFields").style.display = "none";
+	    document.getElementById("rollNo").disabled = true;
+	}
 
 
     // ==============================
@@ -394,20 +395,20 @@
 
     const formData = new FormData();
 
-    formData.append("token", token);
-    formData.append("role", role);
-    formData.append("title", document.querySelector("select").value);
-    formData.append("firstName", document.querySelectorAll("input")[0].value);
-    formData.append("middleName", document.querySelectorAll("input")[1].value);
-    formData.append("lastName", document.querySelectorAll("input")[2].value);
-    formData.append("dob", document.querySelector("input[type='date']").value);
-    formData.append("gender", document.querySelectorAll("select")[1].value);
-    formData.append("mobile", document.querySelector("input[type='tel']").value);
-    formData.append("password", password);
+	formData.append("token", token);
+	formData.append("title", document.getElementById("title").value);
+	formData.append("firstName", document.getElementById("firstName").value);
+	formData.append("middleName", document.getElementById("middleName").value);
+	formData.append("lastName", document.getElementById("lastName").value);
+	formData.append("dob", document.getElementById("dob").value);
+	formData.append("gender", document.getElementById("gender").value);
+	formData.append("mobile", document.getElementById("mobile").value);
+	formData.append("password", password);
 
-    if (role === "STUDENT") {
-        formData.append("rollNo", document.querySelector("input[placeholder='IU0000000000']").value);
-    }
+	if (role === "STUDENT") {
+	    formData.append("rollNo", document.getElementById("rollNo").value);
+	}
+
 
     const fileInput = document.getElementById("profilePic");
     if (!fileInput.files[0]) {

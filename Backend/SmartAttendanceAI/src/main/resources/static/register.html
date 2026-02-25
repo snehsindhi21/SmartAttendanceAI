@@ -382,55 +382,63 @@
     // 🚀 REAL REGISTRATION
     // ==============================
     async function handleRegistration(e) {
-    e.preventDefault();
+        e.preventDefault();
 
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
 
-    if (password !== confirmPassword) {
-        alert("Passwords do not match!");
-        return;
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
+
+        const form = e.target;
+        const inputs = form.querySelectorAll("input, select");
+
+        const data = {
+            token: token,
+            role: role,
+            title: inputs[0].value,
+            firstName: inputs[1].value,
+            middleName: inputs[2].value,
+            lastName: inputs[3].value,
+            dob: inputs[4].value,
+            gender: inputs[5].value,
+            mobile: inputs[7].value,
+            rollNo: role === "STUDENT" ? inputs[8].value : null,
+            password: password
+        };
+
+        const btn = form.querySelector("button[type='submit']");
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+        btn.disabled = true;
+
+        try {
+            const response = await fetch("http://localhost:8080/api/auth/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.text();
+
+            if (!response.ok) {
+                throw new Error(result);
+            }
+
+            alert("Registration Successful!");
+
+            window.location.href = "login.html";
+
+        } catch (error) {
+            alert("Registration Failed: " + error.message);
+        }
+
+        btn.innerHTML = "Complete Registration";
+        btn.disabled = false;
     }
-
-    const formData = new FormData();
-
-    formData.append("token", token);
-    formData.append("role", role);
-    formData.append("title", document.querySelector("select").value);
-    formData.append("firstName", document.querySelectorAll("input")[0].value);
-    formData.append("middleName", document.querySelectorAll("input")[1].value);
-    formData.append("lastName", document.querySelectorAll("input")[2].value);
-    formData.append("dob", document.querySelector("input[type='date']").value);
-    formData.append("gender", document.querySelectorAll("select")[1].value);
-    formData.append("mobile", document.querySelector("input[type='tel']").value);
-    formData.append("password", password);
-
-    if (role === "STUDENT") {
-        formData.append("rollNo", document.querySelector("input[placeholder='IU0000000000']").value);
-    }
-
-    const fileInput = document.getElementById("profilePic");
-    if (!fileInput.files[0]) {
-        alert("Profile photo is required!");
-        return;
-    }
-
-    formData.append("profilePic", fileInput.files[0]);
-
-    const response = await fetch("http://localhost:8080/api/auth/register", {
-        method: "POST",
-        body: formData
-    });
-
-    if (!response.ok) {
-        alert("Registration failed");
-        return;
-    }
-
-    alert("Registration Successful!");
-    window.location.href = "login.html";
-}
-
 
 </script>
 

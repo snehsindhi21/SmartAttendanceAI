@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Admin Dashboard | Smart Attendance-AI</title>
-    
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -25,12 +25,12 @@
                     },
                     colors: {
                         brand: {
-                            50: '#f0f9ff', // Sky Blue Tint
+                            50: '#f0f9ff',
                             100: '#e0f2fe',
-                            500: '#0ea5e9', // Sky Blue Base
+                            500: '#0ea5e9',
                             600: '#0284c7',
                             900: '#0c4a6e',
-                            accent: '#f97316' // Orange Accent
+                            accent: '#f97316'
                         }
                     },
                     boxShadow: {
@@ -38,8 +38,8 @@
                         'glass-hover': '0 12px 40px 0 rgba(31, 38, 135, 0.15)',
                     },
                     borderRadius: {
-                        'xl-p': '1rem', // Primary standard radius
-                        '2xl-p': '1.5rem', // Card standard radius
+                        'xl-p': '1rem',
+                        '2xl-p': '1.5rem',
                     }
                 }
             }
@@ -109,7 +109,7 @@
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
+
         /* Slider Styling */
         input[type=range] {
             -webkit-appearance: none;
@@ -133,6 +133,40 @@
             background: #e2e8f0;
             border-radius: 2px;
         }
+        /* Make tables usable on small screens */
+@media (max-width: 1024px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* Improve spacing on mobile */
+@media (max-width: 768px) {
+    #main-content {
+        padding: 1rem !important;
+    }
+
+    .glass-panel {
+        padding: 1.25rem !important;
+    }
+
+    h1 {
+        font-size: 1.5rem !important;
+    }
+
+    h3 {
+        font-size: 1.1rem !important;
+    }
+}
+
+/* Improve form stacking readability */
+@media (max-width: 640px) {
+    .grid {
+        gap: 1rem !important;
+    }
+}
     </style>
 </head>
 <body class="antialiased h-screen flex overflow-hidden selection:bg-brand-500 selection:text-white font-sans">
@@ -216,21 +250,35 @@
 
         // --- View Router ---
         function switchView(viewId) {
-            currentView = viewId;
-            renderSidebar();
-            
-            const content = document.getElementById('main-content');
-            content.classList.remove('fade-in');
-            void content.offsetWidth; // Trigger reflow
-            content.classList.add('fade-in');
+    currentView = viewId;
+    renderSidebar();
+    
+    const content = document.getElementById('main-content');
+    content.classList.remove('fade-in');
+    void content.offsetWidth;
+    content.classList.add('fade-in');
 
-            switch(viewId) {
-                case 'students': content.innerHTML = getStudentMgmtHTML(); break;
-                case 'faculty': content.innerHTML = getFacultyMgmtHTML(); break;
-                case 'timetable': content.innerHTML = getTimetableHTML(); break;
-                case 'geo': content.innerHTML = getGeoFencingHTML(); break;
-            }
-        }
+    switch(viewId) {
+        case 'students':
+            content.innerHTML = getStudentMgmtHTML();
+            initStudentManagement();
+            break;
+
+        case 'faculty':
+            content.innerHTML = getFacultyMgmtHTML();
+            initFacultyManagement();
+            break;
+
+        case 'timetable':
+            content.innerHTML = getTimetableHTML();
+            break;
+
+        case 'geo':
+            content.innerHTML = getGeoFencingHTML();
+            break;
+    }
+}
+
 
         // --- HTML Generators for Views ---
 
@@ -260,16 +308,29 @@
                         <div class="w-8 h-8 rounded-lg bg-brand-50 text-brand-600 flex items-center justify-center"><i class="fa-solid fa-user-plus text-sm"></i></div>
                         Invite New Student
                     </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
-                        <input type="text" placeholder="Full Name" class="input-field">
-                        <input type="email" placeholder="Email Address" class="input-field">
-                        <input type="text" placeholder="Mobile Number" class="input-field">
-                        <select class="input-field text-slate-600">
-                            <option>Select Class</option>
-                            <option>CS-A</option>
-                            <option>CS-B</option>
-                        </select>
-                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <div>
+        <label class="text-xs font-bold text-slate-500 mb-2 block uppercase tracking-wider">
+            Full Name
+        </label>
+        <input type="text" placeholder="Enter full name" class="input-field">
+    </div>
+
+    <div>
+        <label class="text-xs font-bold text-slate-500 mb-2 block uppercase tracking-wider">
+            Email Address
+        </label>
+        <input type="email" placeholder="student@email.com" class="input-field">
+    </div>
+
+    <div>
+        <label class="text-xs font-bold text-slate-500 mb-2 block uppercase tracking-wider">
+            Mobile Number
+        </label>
+        <input type="text" placeholder="+91 XXXXX XXXXX" class="input-field">
+    </div>
+</div>
+
                     <div class="mt-6 text-right">
                         <button class="bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white px-8 py-3 rounded-xl-p font-bold shadow-lg shadow-brand-500/30 transition-all hover:-translate-y-0.5">
                             Send Registration Link
@@ -280,7 +341,7 @@
                 <!-- Student Table -->
                 <div class="glass-panel rounded-2xl-p overflow-hidden border border-white/60 shadow-md">
                     <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-white/40 backdrop-blur-sm">
-                        <h3 class="font-bold text-slate-800">Registered Students</h3>
+                        <h3 class="font-bold text-slate-800">Invited Students</h3>
                         <div class="relative w-64">
                             <i class="fa-solid fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-xs"></i>
                             <input type="text" placeholder="Search..." class="w-full pl-9 pr-4 py-2 bg-white/80 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all">
@@ -296,27 +357,8 @@
                                 <th class="px-6 py-4 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 font-medium">
-                            <tr class="hover:bg-brand-50/30 transition-colors">
-                                <td class="px-6 py-4 font-bold text-slate-800">Aarav Patel</td>
-                                <td class="px-6 py-4 text-slate-600">CS-A</td>
-                                <td class="px-6 py-4 text-slate-500">5 Enrolled</td>
-                                <td class="px-6 py-4"><span class="bg-green-50 text-green-700 px-2.5 py-1 rounded-md border border-green-200 text-xs font-bold">Active</span></td>
-                                <td class="px-6 py-4 text-right text-slate-400">
-                                    <button class="hover:text-brand-600 mr-3 transition-colors"><i class="fa-solid fa-eye"></i></button>
-                                    <button class="hover:text-red-600 transition-colors"><i class="fa-solid fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-brand-50/30 transition-colors">
-                                <td class="px-6 py-4 font-bold text-slate-800">Priya Sharma</td>
-                                <td class="px-6 py-4 text-slate-600">CS-B</td>
-                                <td class="px-6 py-4 text-slate-500">5 Enrolled</td>
-                                <td class="px-6 py-4"><span class="bg-yellow-50 text-yellow-700 px-2.5 py-1 rounded-md border border-yellow-200 text-xs font-bold">Invited</span></td>
-                                <td class="px-6 py-4 text-right text-slate-400">
-                                    <button class="hover:text-brand-600 mr-3 transition-colors"><i class="fa-solid fa-eye"></i></button>
-                                    <button class="hover:text-red-600 transition-colors"><i class="fa-solid fa-trash"></i></button>
-                                </td>
-                            </tr>
+                        <tbody id="studentTable" class="divide-y divide-slate-100 font-medium">
+                            <!-- Rows will be rendered by JS -->
                         </tbody>
                     </table>
                 </div>
@@ -351,6 +393,7 @@
                         </button>
                     </div>
                 </div>
+            
 
                 <!-- Faculty Table -->
                 <div class="glass-panel rounded-2xl-p overflow-hidden border border-white/60 shadow-md">
@@ -364,27 +407,9 @@
                                 <th class="px-6 py-4 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 font-medium">
-                            <tr class="hover:bg-brand-50/30 transition-colors">
-                                <td class="px-6 py-4 font-bold text-slate-800">Dr. Sarah Smith</td>
-                                <td class="px-6 py-4 text-slate-600">sarah.smith@uni.edu</td>
-                                <td class="px-6 py-4"><span class="bg-blue-50 text-blue-600 px-2.5 py-1 rounded-md border border-blue-100 text-xs font-bold">Advanced AI</span></td>
-                                <td class="px-6 py-4 text-slate-500">CS-A, CS-B</td>
-                                <td class="px-6 py-4 text-right text-slate-400">
-                                    <button class="hover:text-purple-600 mr-3 transition-colors"><i class="fa-solid fa-pen-to-square"></i></button>
-                                    <button class="hover:text-red-600 transition-colors"><i class="fa-solid fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr class="hover:bg-brand-50/30 transition-colors">
-                                <td class="px-6 py-4 font-bold text-slate-800">Prof. R.K. Gupta</td>
-                                <td class="px-6 py-4 text-slate-600">rk.gupta@uni.edu</td>
-                                <td class="px-6 py-4"><span class="bg-orange-50 text-orange-600 px-2.5 py-1 rounded-md border border-orange-100 text-xs font-bold">Database</span></td>
-                                <td class="px-6 py-4 text-slate-500">CS-A</td>
-                                <td class="px-6 py-4 text-right text-slate-400">
-                                    <button class="hover:text-purple-600 mr-3 transition-colors"><i class="fa-solid fa-pen-to-square"></i></button>
-                                    <button class="hover:text-red-600 transition-colors"><i class="fa-solid fa-trash"></i></button>
-                                </td>
-                            </tr>
+                        <tbody id="facultyTable" class="divide-y divide-slate-100 font-medium">
+
+                            
                         </tbody>
                     </table>
                 </div>
@@ -482,7 +507,7 @@
                                 <span class="mr-3 text-sm font-bold text-slate-600 group-hover:text-brand-600 transition-colors">Enable Fencing</span>
                                 <div class="relative">
                                     <input type="checkbox" class="sr-only peer" checked>
-                                    <div class="w-12 h-7 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-green-500 shadow-inner"></div>
+                                    <div class="w-12 h-7 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-green-500 shadow-inner"></div>
                                 </div>
                             </label>
                         </div>
@@ -513,7 +538,6 @@
                                 </div>
                                 <div class="relative h-6 flex items-center">
                                     <input type="range" min="10" max="500" value="50" oninput="updateRadius(this.value)" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-500 z-10">
-                                    <!-- Decorative track fill would require JS for width, keeping simple for now -->
                                 </div>
                             </div>
 
@@ -559,22 +583,395 @@
         // --- Radius Logic ---
         function updateRadius(val) {
             // Update Text Labels
-            document.getElementById('radius-val').innerText = val + 'm';
-            document.getElementById('map-radius-text').innerText = val + 'm';
+            const radiusValEl = document.getElementById('radius-val');
+            const mapRadiusEl = document.getElementById('map-radius-text');
+            if (radiusValEl) radiusValEl.innerText = val + 'm';
+            if (mapRadiusEl) mapRadiusEl.innerText = val + 'm';
             
             // Visual feedback on "map"
             const circle = document.getElementById('map-circle');
-            // Mock scale calculation
-            const scale = 1 + (val / 100); 
-            circle.style.transform = `scale(${scale})`;
-            circle.style.opacity = Math.max(0.2, 1 - (val/600)); // Fade slightly as it gets huge
+            if (circle) {
+                const scale = 1 + (val / 100);
+                circle.style.transform = `scale(${scale})`;
+                circle.style.opacity = Math.max(0.2, 1 - (val/600));
+            }
         }
 
-        // Initialize First View
-        switchView('students');
+
+        // Students array persisted in localStorage for demo (key: adm_students)
+        let students = JSON.parse(localStorage.getItem('adm_students') || '[]');
+        // Faculty array (localStorage demo)
+        let facultyList = JSON.parse(localStorage.getItem('adm_faculty') || '[]');
+
+        
 
         /* ---------- AUTH ---------- */
- if (!localStorage.getItem("token")) location.href = "login.html";
+        if (!localStorage.getItem("token")) location.href = "login.html";
+
+        /* ---------- STUDENT MANAGEMENT LOGIC (based on reference JS) ---------- */
+        
+        
+
+        // Initialize student management - called each time Student view is shown
+        function initStudentManagement() {
+            const container = document.getElementById('main-content');
+
+            // Query form inputs inside the current Student Management view
+            const inputs = Array.from(container.querySelectorAll('.glass-panel input[placeholder]'));
+            const nameInput = inputs[0] || null;      // Full Name
+            const emailInput = inputs[1] || null;     // Email
+            const mobileInput = inputs[2] || null;    // Mobile
+            // Note: original layout leaves 4th column empty, so Class input not present - we'll default to "Not Assigned"
+
+            // Find the button labeled "Send Registration Link" inside the Student invite panel
+            const buttons = Array.from(container.querySelectorAll('.glass-panel button'));
+            const sendBtn = buttons.find(b => b.innerText && b.innerText.trim().toLowerCase().includes('send registration link'));
+
+            // Attach handler
+            if (sendBtn) {
+
+    sendBtn.onclick = null;
+
+    sendBtn.onclick = () => {
+
+        const name = nameInput ? nameInput.value.trim() : '';
+        const email = emailInput ? emailInput.value.trim() : '';
+        const mobile = mobileInput ? mobileInput.value.trim() : '';
+
+        if (!name || !email || !mobile) {
+            alert("Please fill all fields");
+            return;
+        }
+
+        const payload = {
+            name: name,
+            email: email,
+            mobile: mobile
+        };
+
+        // Disable button UX
+        sendBtn.disabled = true;
+        const originalText = sendBtn.innerText;
+        sendBtn.innerText = "Sending...";
+
+        fetch("http://localhost:8080/api/admin/students/invite", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("Failed");
+            return res.text();
+        })
+        .then(msg => {
+
+    alert("✅ Registration link sent successfully");
+
+    const studentObj = {
+        id: Date.now(),
+        name: name,
+        email: email,
+        mobile: mobile,
+        class: "Not Assigned",
+        subjects: [],
+        status: "INVITED"
+    };
+
+    students.push(studentObj);
+    persistStudents();
+    renderStudents();
+
+    nameInput.value = "";
+    emailInput.value = "";
+    mobileInput.value = "";
+
+})
+
+        .catch(err => {
+            alert("❌ Failed to send registration link");
+            console.error(err);
+        })
+        .finally(() => {
+            sendBtn.disabled = false;
+            sendBtn.innerText = originalText;
+        });
+    };
+}
+
+
+            // Render existing students into table
+            renderStudents();
+
+            // Attach search filtering (UI only)
+            const searchInput = container.querySelector('input[placeholder="Search..."]');
+            if (searchInput) {
+                searchInput.oninput = (e) => {
+                    renderStudents(e.target.value.trim().toLowerCase());
+                }
+            }
+        }
+
+        // Persist to localStorage (demo)
+        function persistStudents() {
+            try {
+                localStorage.setItem('adm_students', JSON.stringify(students));
+            } catch (e) { console.warn('Unable to persist students', e); }
+        }
+
+        // Render students table - optional filter by searchTerm
+        function renderStudents(searchTerm = '') {
+
+    const tbody = document.getElementById('studentTable');
+    if (!tbody) return;
+
+    let filteredStudents = students;
+
+    if (searchTerm) {
+        filteredStudents = students.filter(s => {
+            const hay = (
+                (s.name || '') + ' ' +
+                (s.email || '') + ' ' +
+                (s.class || '') + ' ' +
+                (s.subjects || []).join(' ')
+            ).toLowerCase();
+
+            return hay.includes(searchTerm);
+        });
+    }
+
+    if (filteredStudents.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="text-center py-8 text-slate-400">
+                    No students available
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = filteredStudents.map((s, i) => {
+
+        const statusBadge = s.status === 'INVITED'
+            ? `<span class="bg-yellow-50 text-yellow-700 px-2.5 py-1 rounded-md border border-yellow-200 text-xs font-bold">Invited</span>`
+            : `<span class="bg-green-50 text-green-700 px-2.5 py-1 rounded-md border border-green-200 text-xs font-bold">Active</span>`;
+
+        return `
+            <tr class="hover:bg-brand-50/30 transition-colors">
+                <td class="px-6 py-4 font-bold text-slate-800">
+                    ${escapeHtml(s.name)}<br>
+                    <small class="text-xs text-slate-500 font-normal">${escapeHtml(s.email)}</small>
+                </td>
+                <td class="px-6 py-4 text-slate-600">${escapeHtml(s.class || "Not Assigned")}</td>
+                <td class="px-6 py-4 text-slate-500">${s.subjects?.join(", ") || "-"}</td>
+                <td class="px-6 py-4">${statusBadge}</td>
+                <td class="px-6 py-4 text-right">
+                    <button onclick="deleteItem(${i}, 'student')" class="text-red-500 hover:text-red-700">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+        // Assign subjects - same behaviour for student/faculty (UI prompt)
+        function assignSub(index, type) {
+            const input = prompt("Enter Subjects (comma separated):");
+            if (!input) return;
+
+            if (type === 'student') {
+                students[index].subjects = input.split(",").map(s => s.trim());
+                // If student was invited, promote to ACTIVE when assigned subjects
+                if (students[index].status === 'INVITED') students[index].status = 'ACTIVE';
+                persistStudents();
+                renderStudents();
+            } else {
+                // For future faculty logic (not changed here)
+                console.warn('assignSub called for type:', type);
+            }
+        }
+
+        // Delete item with confirm
+        function deleteItem(index, type) {
+            if (!confirm("Are you sure you want to delete this record?")) return;
+            if (type === 'student') {
+                students.splice(index, 1);
+                persistStudents();
+                renderStudents();
+            } else {
+                // faculty delete handled elsewhere
+                console.warn('deleteItem called for type:', type);
+            }
+        }
+
+        // Clear inputs - accepts array of input elements or ids
+        function clearInputs(elements) {
+            if (!elements || !elements.length) return;
+            elements.forEach(el => {
+                if (!el) return;
+                try { el.value = ''; } catch(e){ /* noop */ }
+            });
+        }
+
+        // Basic HTML-escape function for safe rendering in table
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // --- End of student-management logic ---
+        /* ---------- FACULTY MANAGEMENT LOGIC ---------- */
+
+
+
+
+
+
+function initFacultyManagement() {
+
+    const container = document.getElementById('main-content');
+
+    const inputs = Array.from(container.querySelectorAll('.glass-panel input[placeholder]'));
+    const nameInput = inputs[0] || null;
+    const emailInput = inputs[1] || null;
+
+    const buttons = Array.from(container.querySelectorAll('.glass-panel button'));
+    const sendBtn = buttons.find(b =>
+        b.innerText && b.innerText.trim().toLowerCase().includes('send invite')
+    );
+
+    if (!sendBtn) return;
+
+    sendBtn.onclick = null;
+
+    sendBtn.onclick = () => {
+
+        const name = nameInput ? nameInput.value.trim() : '';
+        const email = emailInput ? emailInput.value.trim() : '';
+
+        if (!name || !email) {
+            alert("Please fill all fields");
+            return;
+        }
+
+        const payload = { name, email };
+
+        sendBtn.disabled = true;
+        const originalText = sendBtn.innerText;
+        sendBtn.innerText = "Sending...";
+
+        fetch("http://localhost:8080/api/admin/faculty/invite", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token")
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(async res => {
+            const text = await res.text();
+            if (!res.ok) throw new Error(text || "Server Error");
+            return text;
+            })
+
+        .then(() => {
+
+            alert("✅ Faculty invitation sent successfully");
+
+            const facultyObj = {
+                id: Date.now(),
+                name,
+                email,
+                subjects: [],
+                classes: "-",
+                status: "INVITED"
+            };
+
+            facultyList.push(facultyObj);
+            localStorage.setItem('adm_faculty', JSON.stringify(facultyList));
+
+            renderFaculty();
+
+            nameInput.value = "";
+            emailInput.value = "";
+
+        })
+        .catch(err => {
+            alert("❌ Failed to send faculty invite");
+            console.error(err);
+        })
+        .finally(() => {
+            sendBtn.disabled = false;
+            sendBtn.innerText = originalText;
+        });
+    };
+
+    renderFaculty();
+}
+
+function renderFaculty() {
+
+    const tbody = document.getElementById('facultyTable');
+    if (!tbody) return;
+
+    if (facultyList.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="text-center py-8 text-slate-400">
+                    No faculty available
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = facultyList.map((f, i) => {
+
+        const statusBadge = f.status === "INVITED"
+            ? `<span class="bg-yellow-50 text-yellow-700 px-2.5 py-1 rounded-md border border-yellow-200 text-xs font-bold">Invited</span>`
+            : `<span class="bg-green-50 text-green-700 px-2.5 py-1 rounded-md border border-green-200 text-xs font-bold">Active</span>`;
+
+        return `
+            <tr class="hover:bg-brand-50/30 transition-colors">
+                <td class="px-6 py-4 font-bold text-slate-800">${escapeHtml(f.name)}</td>
+                <td class="px-6 py-4 text-slate-600">${escapeHtml(f.email)}</td>
+                <td class="px-6 py-4 text-slate-500">${f.subjects?.join(", ") || "-"}</td>
+                <td class="px-6 py-4 text-slate-500">${f.classes || "-"}</td>
+                <td class="px-6 py-4 text-right">
+                    <button onclick="deleteFaculty(${i})" class="text-red-500 hover:text-red-700">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+
+function deleteFaculty(index) {
+    if (!confirm("Delete this faculty?")) return;
+
+    facultyList.splice(index, 1);
+    localStorage.setItem('adm_faculty', JSON.stringify(facultyList));
+    renderFaculty();
+}
+
+
+// Initialize after all variables declared
+document.addEventListener("DOMContentLoaded", function () {
+    switchView('students');
+});
+
+        
     </script>
 </body>
 </html>
